@@ -1,0 +1,28 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "NugetXray": "1.0.0-*",
+    "xunit": "2.2.0-beta2-build3300",
+    "dotnet-test-xunit": "2.2.0-preview2-build1029",
+    "System.Runtime.Serialization.Xml": "4.1.1",
+    "System.Linq": "4.1.0",
+    "NuGet.Packaging": "3.5.0-rc1-final",
+    "NuGet.Protocol.Core.v3": "3.5.0-rc1-final",
+    "NuGet.Protocol.Core.Types": "3.5.0-rc1-final",
+    "System.Linq.Parallel": "4.0.1"
+  },
+
+  "testRunner": "xunit",
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0"
+        }
+      }
+    }
+  }
+}
