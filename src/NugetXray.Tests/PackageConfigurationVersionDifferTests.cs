@@ -22,7 +22,20 @@ namespace NugetXray.Tests
                 new PackageReference(new PackageIdentity("Castle.Core", new NuGetVersion("1.0.0")), NuGetFramework.AnyFramework), 
             });
 
-            Assert.Equal(2, diffs.Count());
+            Assert.Equal(2, diffs.Length);
+        }
+
+        [Fact]
+        public async Task CanReturnMissingPackageDiffWhenMissingFromFeed()
+        {
+            var differ = new PackageConfigurationVersionDiffer("https://www.nuget.org/api/v2");
+
+            var diffs = await differ.GetPackageDiffsAsync(new[]
+            {
+                new PackageReference(new PackageIdentity("Missing.Package", new NuGetVersion("2.2.1")), NuGetFramework.AnyFramework),
+            });
+
+            Assert.False(diffs.First().WasFoundInFeed);
         }
     }
 }

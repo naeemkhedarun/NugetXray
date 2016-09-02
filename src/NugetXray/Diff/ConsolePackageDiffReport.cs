@@ -22,7 +22,7 @@ namespace NugetXray
 
             foreach (var packageDiffReport in _results)
             {
-                if (packageDiffReport.Diff.Diff >= new SemanticVersion(1, 0, 0))
+                if (packageDiffReport.Diff.Diff >= new SemanticVersion(0, 0, 0))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     errors++;
@@ -41,9 +41,11 @@ namespace NugetXray
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
 
+                var diffMessage = packageDiffReport.Diff.WasFoundInFeed ? packageDiffReport.Diff.Diff.ToString() : "Not found.";
+
                 if (_verbose)
                 {
-                    Console.Write($"{packageDiffReport.Package.PackageIdentity} | -{packageDiffReport.Diff.Diff}");
+                    Console.Write($"{packageDiffReport.Package.PackageIdentity} | -{diffMessage}");
 
                     Console.WriteLine();
                     foreach (var config in packageDiffReport.Configs)
@@ -54,7 +56,7 @@ namespace NugetXray
                 }
                 else
                 {
-                    Console.Write($"{packageDiffReport.Package.PackageIdentity.ToString().PadRight(70)} | -{packageDiffReport.Diff.Diff.ToString().PadRight(10)}");
+                    Console.Write($"{packageDiffReport.Package.PackageIdentity.ToString().PadRight(70)} | -{diffMessage.PadRight(10)}");
 
                     Console.Write($" | {packageDiffReport.Configs.Length.ToString().PadRight(3)} configs");
                     Console.WriteLine();
