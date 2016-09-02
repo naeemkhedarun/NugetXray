@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Configuration;
@@ -25,7 +26,6 @@ namespace NugetXray.Diff
 
             var packageVersions = packages.Select(x =>
                     new { PackageReference = x, Task = resource.GetAllVersionsAsync(x.PackageIdentity.Id, CancellationToken.None) }).ToList();
-
             await Task.WhenAll(packageVersions.Select(x => x.Task));
 
             return packageVersions.Select(x => PackageVersionDiffer.GetVersionDiff(x.PackageReference, x.Task.Result.ToArray())).ToArray();

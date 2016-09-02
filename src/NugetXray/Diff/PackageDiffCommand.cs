@@ -21,18 +21,34 @@ namespace NugetXray.Diff
         {
             Console.WriteLine($"Scanning {Source} for packages.configs.");
 
-            var scanner = new PackageConfigurationScanner();
-            var configs = scanner.Find(Directory);
-            var reader = new BulkPackageConfigurationReader();
-            var packages = await reader.GetPackagesAsync(configs.ToArray());
-            var consolidatedPackages = PackageReferenceConsolidator.Consolidate(packages);
-            var differ = new PackageConfigurationVersionDiffer(Source);
-            var results = consolidatedPackages.Zip(
-                    await differ.GetPackageDiffsAsync(consolidatedPackages.Select(x => x.Key).ToArray()),
-                    (pair, diff) => new PackageDiffReportItem(pair.Key, pair.Value, diff))
-                .OrderByDescending(x => x.Diff.Diff);
+            try
+            {
+                var scanner = new PackageConfigurationScanner();
+                var configs = scanner.Find(Directory);
+                var reader = new BulkPackageConfigurationReader();
+                var packages = await reader.GetPackagesAsync(configs.ToArray());
+                var consolidatedPackages = PackageReferenceConsolidator.Consolidate(packages);
+                var differ = new PackageConfigurationVersionDiffer(Source);
+                var results = consolidatedPackages.Zip(
+                        await differ.GetPackageDiffsAsync(consolidatedPackages.Select(x => x.Key).ToArray()),
+                        (pair, diff) => new PackageDiffReportItem(pair.Key, pair.Value, diff))
+                    .OrderByDescending(x => x.Diff.Diff);
 
-            new ConsolePackageDiffReport(results, Verbose).Write();
+                new ConsolePackageDiffReport(results, Verbose).Write();
+            }
+            catch (Exception e)
+            {
+                if (Verbose)
+                {
+                    Console.WriteLine(e);
+                }
+                else
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+                return 1;
+            }
 
             return 0;
         }
