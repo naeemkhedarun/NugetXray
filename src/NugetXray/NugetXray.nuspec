@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>NugetXray</id>
+    <version>$version$</version>
+    <authors>Naeem Khedarun</authors>
+    <owners>Naeem Khedarun</owners>
+    <projectUrl>http://github.com/naeemkhedarun/nugetxray</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Analysis and issue detector for nuget packages and project references.</description>
+    <releaseNotes>Diff version command to find differences between installed and latest versions.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>nuget build analysis</tags>
+  </metadata>
+  <files>
+    <file src="bin\Debug\netcoreapp1.0\win7-x64\**" target="tools" />
+    <file src="bin\Debug\netcoreapp1.0\win7-x64\publish\**" target="tools\publish" />
+  </files>
+</package>

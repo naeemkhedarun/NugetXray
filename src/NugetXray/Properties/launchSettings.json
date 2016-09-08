@@ -2,7 +2,7 @@
   "profiles": {
     "NugetXray": {
       "commandName": "Project",
-      "commandLineArgs": "diff -d C:\\asos\\Product\\ProductPublisher\\Main\\ -s https://proget.services.kingsway.asos.com/nuget/ASOS"
+      "commandLineArgs": "diff -d C:\\asos\\Product\\ProductPublisher\\Main\\ -s https://www.nuget.down.org/api/v2"
     }
   }
 }
