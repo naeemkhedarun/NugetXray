@@ -1,6 +1,6 @@
 # NugetXray
 
-[![NuGet](https://img.shields.io/nuget/v/NugetXray?maxAge=2592000)](https://www.nuget.org/packages/NugetXray/) [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?maxAge=2592000)](https://gitter.im/NugetXray/Lobby)
+[![NuGet](https://img.shields.io/nuget/v/NugetXray.svg?maxAge=2592000)](https://www.nuget.org/packages/NugetXray/) [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?maxAge=2592000)](https://gitter.im/NugetXray/Lobby)
 
 NugetXray is a command line tool that analyses your nuget and project references. It contains commands that help you see 
 how out of date your packages are, diagnose issues with multiple versions of the same package, and more. 
