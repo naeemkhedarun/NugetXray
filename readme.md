@@ -46,7 +46,6 @@ Scanning https://www.nuget.org/api/v2 for packages.configs.
 WindowsAzure.Storage.2.1.0.4                                           | -5.0.0      | 3   configs
 Newtonsoft.Json.6.0.8                                                  | -3.0.0      | 4   configs
 WindowsAzure.Storage.4.3.0                                             | -3.0.0      | 1   configs
-...
 ```
 
 You can also get more detailed output by using the verbose switch.
@@ -64,8 +63,33 @@ Newtonsoft.Json.6.0.8 | -3.0.0
   C:\git\ConveyorBelt\src\ConveyorBelt.Tooling\packages.config
   C:\git\ConveyorBelt\src\ConveyorBelt.Worker\packages.config
   C:\git\ConveyorBelt\test\ConveyorBelt.Tooling.Test\packages.config
+```
 
-...
+## Duplicate
+
+The duplicate command finds multiple versions of the same package. Multiple versions should be consolidated to a single version 
+to avoid runtime issues.
+
+```
+> .\NugetXray.exe duplicate -d C:\git\ConveyorBelt\
+Scanning C:\git\ConveyorBelt\ for packages.configs.
+WindowsAzure.Storage                                                   | 2 versions
+
+Errors:   1
+```
+
+You can also get more detailed output by using the verbose switch.
+
+```
+> .\NugetXray.exe duplicate -d C:\git\ConveyorBelt\ -v
+Scanning C:\git\ConveyorBelt\ for packages.configs.
+WindowsAzure.Storage | 2 versions
+  (2.1.0.4, C:\git\ConveyorBelt\src\ConveyorBelt.ConsoleWorker\packages.config)
+  (2.1.0.4, C:\git\ConveyorBelt\src\ConveyorBelt.Tooling\packages.config)
+  (2.1.0.4, C:\git\ConveyorBelt\src\ConveyorBelt.Worker\packages.config)
+  (4.3.0, C:\git\ConveyorBelt\test\ConveyorBelt.Tooling.Test\packages.config)
+
+Errors:   1
 ```
 
 # Issues and feature requests
