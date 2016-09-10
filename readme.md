@@ -5,27 +5,32 @@ how out of date your packages are, diagnose issues with multiple versions of the
 
 # Installation
 
-NugetXray itself is a package available from [nuget](https://www.nuget.org/packages/NugetXray/). 
+NugetXray itself is a package available from [nuget](https://www.nuget.org/packages/NugetXray/). It has been compiled 
+down to a native executable so a dotnet core installation is not needed.
 
 ```
-PS> nuget install NugetXray
+> nuget install NugetXray
 ```
 
+You can access the executable in the tools folder.
+
 ```
-PS> cd .\NugetXray*\tools
-PS> .\NugetXray.exe
+> cd .\NugetXray*\tools
+> .\NugetXray.exe
 ```
+
+
 
 ## Building from source
 
-You can close this repository and create your own package using the build script.
+You can clone this repository and create your own package using the build script.
 
 This application is built with [dotnet core](https://www.microsoft.com/net/core) so you will need
 to install the appropriate tools for your platform.
 
 ```
-PS> cd build
-PS> .\build.ps1
+> cd build
+> .\build.ps1
 ```
 
 # Commands
