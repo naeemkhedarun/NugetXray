@@ -1,3 +1,8 @@
+param(
+    [Parameter()]
+    [switch] $pushPackage
+)
+
 $ErrorActionPreference = "Stop"
 
 function Set-Version(){
@@ -19,7 +24,11 @@ dotnet publish --runtime win7-x64
 
 rm *.nupkg
 nuget pack -NoPackageAnalysis -Properties "version=$(Get-Content version)"
-nuget push NugetXray*.nupkg
+
+if($pushPackage)
+{
+    nuget push NugetXray*.nupkg
+}
 
 popd
 popd
