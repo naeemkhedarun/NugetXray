@@ -1,7 +1,8 @@
 {
   "profiles": {
     "NugetXray": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "batch \"diff -d C:\\git\\Product\" \"diff -d C:\\git\\Product\""
     }
   }
 }

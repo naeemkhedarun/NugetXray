@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +12,18 @@ namespace NugetXray
         public async Task<Dictionary<string, PackageReference[]>> GetPackagesAsync(string[] packageConfigurationPaths)
         {
             var tasks = packageConfigurationPaths.ToDictionary(path => path, path => 
-                Task.Run(() => new PackagesConfigReader(new FileStream(path, FileMode.Open, FileAccess.Read)).GetPackages())
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        var packageReferences = new PackagesConfigReader(new FileStream(path, FileMode.Open, FileAccess.Read)).GetPackages();
+                        return packageReferences;
+                    }
+                    catch (Exception e)
+                    {
+                        throw new PackagesConfigReaderException($"Failed on {path}", e);
+                    }
+                })
             );
 
             await Task.WhenAll(tasks.Values);

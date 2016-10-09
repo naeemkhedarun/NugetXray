@@ -1,12 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NuGet.Packaging;
 
 namespace NugetXray.Diff
 {
     class PackageDiffCommandHandler : ICommand
     {
+        private readonly CachedPackageReader _cachedPackageReader;
         private readonly Type _type = typeof(PackageDiffCommand);
+
+        public PackageDiffCommandHandler(CachedPackageReader cachedPackageReader)
+        {
+            _cachedPackageReader = cachedPackageReader;
+        }
 
         public bool CanHandle(Type command)
         {
@@ -15,16 +23,14 @@ namespace NugetXray.Diff
 
         public async Task<CommandResult> Execute(object command)
         {
-            var packageDiffCommand = (PackageDiffCommand)command;
-            
-            Console.WriteLine($"Scanning {packageDiffCommand.Source} for packages.configs.");
+            var packageDiffCommand = (PackageDiffCommand) command;
+
+            Console.WriteLine($"Scanning {packageDiffCommand.Directory} against {packageDiffCommand.Source}.");
 
             try
             {
-                var scanner = new PackageConfigurationScanner();
-                var configs = scanner.Find(packageDiffCommand.Directory);
-                var reader = new BulkPackageConfigurationReader();
-                var packages = await reader.GetPackagesAsync(configs.ToArray());
+                var packages = await _cachedPackageReader.GetPackagesAsync(packageDiffCommand.Directory);
+
                 var consolidatedPackages = PackageReferenceConsolidator.Consolidate(packages);
                 var differ = new PackageConfigurationVersionDiffer(packageDiffCommand.Source);
                 var results = consolidatedPackages.Zip(

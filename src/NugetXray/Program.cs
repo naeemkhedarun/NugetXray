@@ -16,6 +16,8 @@ namespace NugetXray
             container.Register<PackageDiffCommandHandler>();
             container.Register<PackageDuplicateCommandHandler>();
             container.Register<BatchCommandHandler>();
+            container.Register<CachedPackageReader>();
+
             var process = container.GetInstance<CommandProcessor>().Process(args);
             new ReportWriter().Write(process);  
             return process.Max(x => x.Code);
