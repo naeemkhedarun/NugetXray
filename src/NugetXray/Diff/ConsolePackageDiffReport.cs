@@ -10,9 +10,7 @@ namespace NugetXray.Diff
         private readonly IEnumerable<PackageDiffReportItem> _results;
         private readonly bool _verbose;
 
-        private readonly string _fullTemplate = @"{0,70} | {1,10}
- | {2,3} configs
-";
+        private readonly string _fullTemplate = @"{0,-70} | {1,10} | {2,3} configs";
 
         private readonly string _verboseTemplate = @"{0} | -{1}
 {2}
@@ -28,6 +26,12 @@ namespace NugetXray.Diff
         protected override void CreateReport()
         {
             int errors = 0, warnings = 0;
+
+            if (!_verbose)
+            {
+                Write(string.Format(_fullTemplate, "package", "version", ""));
+                Write(new string('-', 71) + "+" + new string('-', 12) + "+" + new string('-', 12));
+            }
 
             foreach (var packageDiffReport in _results)
             {

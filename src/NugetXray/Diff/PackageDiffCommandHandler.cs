@@ -16,6 +16,7 @@ namespace NugetXray.Diff
         public async Task<CommandResult> Execute(object command)
         {
             var packageDiffCommand = (PackageDiffCommand)command;
+            
             Console.WriteLine($"Scanning {packageDiffCommand.Source} for packages.configs.");
 
             try
@@ -32,13 +33,13 @@ namespace NugetXray.Diff
                     .OrderByDescending(x => x.Diff.Diff);
 
                 var consolePackageDiffReport = new ConsolePackageDiffReport(results, packageDiffCommand.Verbose);
-                return new CommandResult(consolePackageDiffReport, 0);
+                return new CommandResult(consolePackageDiffReport, 0, packageDiffCommand.ToString());
             }
             catch (Exception e)
             {
                 Console.WriteLine(packageDiffCommand.Verbose ? e.ToString() : e.Message);
 
-                return new CommandResult(null, 1);
+                return new CommandResult(null, 1, packageDiffCommand.ToString());
             }
         }
 

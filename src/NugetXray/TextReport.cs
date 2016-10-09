@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CommandLine;
 using Microsoft.Extensions.Logging;
 
 namespace NugetXray
@@ -36,5 +37,23 @@ namespace NugetXray
         }
 
         protected abstract void CreateReport();
+    }
+
+    public class CommandProcessorReport : TextReport
+    {
+        private readonly IEnumerable<Error> _errors;
+
+        public CommandProcessorReport(IEnumerable<Error> errors)
+        {
+            this._errors = errors;
+        }
+
+        protected override void CreateReport()
+        {
+            foreach (var error in _errors)
+            {
+                WriteError(error.Tag.ToString());
+            }
+        }
     }
 }

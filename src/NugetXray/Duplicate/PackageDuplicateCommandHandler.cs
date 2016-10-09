@@ -17,7 +17,7 @@ namespace NugetXray.Duplicate
         {
             var packageDuplicateCommand = (PackageDuplicateCommand) command;
             Console.WriteLine($"Scanning {packageDuplicateCommand.Directory} for packages.configs.");
-
+            
             try
             {
                 var scanner = new PackageConfigurationScanner();
@@ -28,12 +28,12 @@ namespace NugetXray.Duplicate
                     .OrderByDescending(x => x.Versions.Length);
 
                 var report = new TextPackageDuplicateReport(duplicates, packageDuplicateCommand.Verbose);
-                return new CommandResult(report, duplicates.Any() ? 1 : 0);
+                return new CommandResult(report, duplicates.Any() ? 1 : 0, packageDuplicateCommand.ToString());
             }
             catch (Exception e)
             {
                 Console.WriteLine(packageDuplicateCommand.Verbose ? e.ToString() : e.Message);
-                return new CommandResult(null, 1);
+                return new CommandResult(null, 1, packageDuplicateCommand.ToString());
             }
         }
 

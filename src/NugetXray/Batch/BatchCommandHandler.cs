@@ -19,7 +19,10 @@ namespace NugetXray.Batch
             var batchCommand = (BatchCommand) command;
             var results = (await Task.WhenAll(batchCommand.Commands.Select(x => Task.Run(() => CommandProcessor.Value.Process(x.Split(' ')))))).SelectMany(x => x).ToList();
 
-            return new CommandResult(new BatchReport(results.Select(x => x.Report)), results.Max(x => x.Code));
+            return new CommandResult(
+                new BatchReport(results.Select(x => x.Report)), 
+                results.Max(x => x.Code),
+                "Batch Command");
         }
 
         public Type CommandType => _type;

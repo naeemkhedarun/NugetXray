@@ -13,5 +13,10 @@ namespace NugetXray.Diff
 
         [Option('v', "verbose", Required = false, Default = false, HelpText = "Prints all messages to standard output.")]
         public bool Verbose { get; set; }
+
+        public override string ToString()
+        {
+            return $"Diff {Directory}";
+        }
     }
 }

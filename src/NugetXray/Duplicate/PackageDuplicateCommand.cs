@@ -10,5 +10,10 @@ namespace NugetXray.Duplicate
 
         [Option('v', "verbose", Required = false, Default = false, HelpText = "Prints all messages to standard output.")]
         public bool Verbose { get; set; }
+
+        public override string ToString()
+        {
+            return $"Duplicate {Directory}";
+        }
     }
 }
