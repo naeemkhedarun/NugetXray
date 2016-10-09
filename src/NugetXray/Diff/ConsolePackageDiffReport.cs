@@ -1,13 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using NuGet.Versioning;
+using System.Linq;
 
-namespace NugetXray
+namespace NugetXray.Diff
 {
-    internal class ConsolePackageDiffReport
+    internal class ConsolePackageDiffReport : TextReport
     {
         private readonly IEnumerable<PackageDiffReportItem> _results;
         private readonly bool _verbose;
+
+        private readonly string _fullTemplate = @"{0,70} | {1,10}
+ | {2,3} configs
+";
+
+        private readonly string _verboseTemplate = @"{0} | -{1}
+{2}
+
+";
 
         public ConsolePackageDiffReport(IEnumerable<PackageDiffReportItem> results, bool verbose)
         {
@@ -15,60 +25,39 @@ namespace NugetXray
             _verbose = verbose;
         }
 
-        public void Write()
+        protected override void CreateReport()
         {
-            var defaultColor = Console.ForegroundColor;
             int errors = 0, warnings = 0;
 
             foreach (var packageDiffReport in _results)
             {
+                var diffMessage = packageDiffReport.Diff.WasFoundInFeed ? packageDiffReport.Diff.Diff.ToString() : "Not found.";
+
+                var log = _verbose
+                    ? string.Format(_verboseTemplate,
+                        packageDiffReport.Package.PackageIdentity, diffMessage,
+                        string.Join(Environment.NewLine, packageDiffReport.Configs.Select(x => $"  {x}")))
+                    : string.Format(_fullTemplate,
+                        packageDiffReport.Package.PackageIdentity.ToString(),
+                        diffMessage,
+                        packageDiffReport.Configs.Length);
+
                 if (packageDiffReport.Diff.Diff >= new SemanticVersion(0, 0, 0))
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
+                    WriteError(log);
                     errors++;
                 }
                 else if (packageDiffReport.Diff.Diff >= new SemanticVersion(0, 1, 0))
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    WriteWarning(log);
                     warnings++;
                 }
                 else if (packageDiffReport.Diff.Diff >= new SemanticVersion(0, 0, 1))
                 {
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                }
-
-                var diffMessage = packageDiffReport.Diff.WasFoundInFeed ? packageDiffReport.Diff.Diff.ToString() : "Not found.";
-
-                if (_verbose)
-                {
-                    Console.Write($"{packageDiffReport.Package.PackageIdentity} | -{diffMessage}");
-
-                    Console.WriteLine();
-                    foreach (var config in packageDiffReport.Configs)
-                    {
-                        Console.WriteLine($"  {config}");
-                    }
-                    Console.WriteLine();
-                }
-                else
-                {
-                    Console.Write($"{packageDiffReport.Package.PackageIdentity.ToString().PadRight(70)} | -{diffMessage.PadRight(10)}");
-
-                    Console.Write($" | {packageDiffReport.Configs.Length.ToString().PadRight(3)} configs");
-                    Console.WriteLine();
+                    Write(log);
                 }
             }
-
-            Console.ForegroundColor = defaultColor;
-
-            Console.WriteLine("");
-            Console.WriteLine($"Errors:   {errors}");
-            Console.WriteLine($"Warnings: {warnings}");
-            Console.WriteLine("");
+            Write($"Errors: {errors}\n{warnings}\n");
         }
     }
 }

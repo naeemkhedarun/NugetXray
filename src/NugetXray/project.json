@@ -9,7 +9,12 @@
     "Microsoft.NETCore.App": "1.0.0",
     "NuGet.Packaging": "3.5.0-rc1-final",
     "NuGet.Protocol.Core.v3": "3.5.0-rc1-final",
-    "NuGet.Protocol.Core.Types": "3.5.0-rc1-final"
+    "NuGet.Protocol.Core.Types": "3.5.0-rc1-final",
+    "Microsoft.Extensions.Logging": "1.0.0",
+    "LightInject": "4.1.1",
+    "Microsoft.Extensions.Logging.Console": "1.0.0",
+    "System.Linq": "4.1.0",
+    "System.Linq.Parallel": "4.0.1"
   },
 
   "frameworks": {

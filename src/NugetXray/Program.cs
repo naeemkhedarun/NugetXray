@@ -1,6 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using CommandLine;
+using System.Linq;
+using LightInject;
+using Microsoft.Extensions.Logging;
+using NugetXray.Batch;
 using NugetXray.Diff;
 using NugetXray.Duplicate;
 
@@ -10,20 +12,22 @@ namespace NugetXray
     {
         public static int Main(string[] args)
         {
-            var result = Parser.Default.ParseArguments<PackageDiffCommand, PackageDuplicateCommand>(args);
-
-            var exitCode = result.MapResult(
-                (PackageDiffCommand o) => o.RunAsync().Result,
-                (PackageDuplicateCommand o) => o.RunAsync().Result,
-                OnParseFailure);
-
-            return exitCode;
-        }
-
-        private static int OnParseFailure(IEnumerable<Error> errors)
-        {
-            Console.WriteLine(errors);
-            return 1;
+            var container = new ServiceContainer();
+            container.SetDefaultLifetime<PerContainerLifetime>();
+            container.Register<CommandProcessor>();
+            container.Register<PackageDiffCommandHandler>();
+            container.Register<PackageDuplicateCommandHandler>();
+            container.Register<BatchCommandHandler>();
+            container.Register(factory =>
+            {
+                var loggerFactory = new LoggerFactory();
+                loggerFactory.AddConsole();
+                return loggerFactory.CreateLogger("Default");
+            });
+            var process = container.GetInstance<CommandProcessor>().Process(args);
+            new ReportWriter().Write(process);  
+            Console.ReadKey();
+            return process.Max(x => x.Code);
         }
     }
 }

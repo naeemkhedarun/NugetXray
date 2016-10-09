@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using CommandLine;
+﻿using CommandLine;
 
 namespace NugetXray.Diff
 {
@@ -16,34 +13,5 @@ namespace NugetXray.Diff
 
         [Option('v', "verbose", Required = false, Default = false, HelpText = "Prints all messages to standard output.")]
         public bool Verbose { get; set; }
-
-        public async Task<int> RunAsync()
-        {
-            Console.WriteLine($"Scanning {Source} for packages.configs.");
-
-            try
-            {
-                var scanner = new PackageConfigurationScanner();
-                var configs = scanner.Find(Directory);
-                var reader = new BulkPackageConfigurationReader();
-                var packages = await reader.GetPackagesAsync(configs.ToArray());
-                var consolidatedPackages = PackageReferenceConsolidator.Consolidate(packages);
-                var differ = new PackageConfigurationVersionDiffer(Source);
-                var results = consolidatedPackages.Zip(
-                        await differ.GetPackageDiffsAsync(consolidatedPackages.Select(x => x.Key).ToArray()),
-                        (pair, diff) => new PackageDiffReportItem(pair.Key, pair.Value, diff))
-                    .OrderByDescending(x => x.Diff.Diff);
-
-                new ConsolePackageDiffReport(results, Verbose).Write();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(Verbose ? e.ToString() : e.Message);
-
-                return 1;
-            }
-
-            return 0;
-        }
     }
 }

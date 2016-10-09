@@ -2,7 +2,7 @@
   "profiles": {
     "NugetXray": {
       "commandName": "Project",
-      "commandLineArgs": "duplicate -d C:\\git\\ConveyorBelt\\"
+      "commandLineArgs": "batch \"diff -d C:/git/ConveyorBelt\" \"diff -d C:/git/ConveyorBelt\""
     }
   }
 }
