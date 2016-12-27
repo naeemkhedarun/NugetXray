@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26014.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8CD3A91A-63F8-49D1-A6D9-3AC6526D473B}"
 EndProject
@@ -10,9 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NugetXray", "src\NugetXray\NugetXray.xproj", "{C7689B4D-555B-45E1-A1AC-8444AA542A67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NugetXray", "src\NugetXray\NugetXray.csproj", "{C7689B4D-555B-45E1-A1AC-8444AA542A67}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NugetXray.Tests", "src\NugetXray.Tests\NugetXray.Tests.xproj", "{2ECDB102-6997-4961-AAED-2BEEEAA2BE5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NugetXray.Tests", "src\NugetXray.Tests\NugetXray.Tests.csproj", "{2ECDB102-6997-4961-AAED-2BEEEAA2BE5F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

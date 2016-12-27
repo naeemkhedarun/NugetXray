@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Packaging;
 using NuGet.Protocol;
@@ -22,10 +23,10 @@ namespace NugetXray.Diff
         {
             var repo = Repository.Factory.GetCoreV2(new PackageSource(_packageSource));
             var resource = await repo.GetResourceAsync<FindPackageByIdResource>(CancellationToken.None);
-            resource.CacheContext = new SourceCacheContext();
+            var cacheContext = new SourceCacheContext();
 
             var packageVersions = packages.Select(x =>
-                    new { PackageReference = x, Task = resource.GetAllVersionsAsync(x.PackageIdentity.Id, CancellationToken.None) }).ToList();
+                    new { PackageReference = x, Task = resource.GetAllVersionsAsync(x.PackageIdentity.Id, cacheContext, new NullLogger(), CancellationToken.None) }).ToList();
             await Task.WhenAll(packageVersions.Select(x => x.Task));
 
             return packageVersions.Select(x => PackageVersionDiffer.GetVersionDiff(x.PackageReference, x.Task.Result.ToArray())).ToArray();
