@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NuGet.Packaging;
 
 namespace NugetXray.Diff
 {
@@ -38,8 +36,11 @@ namespace NugetXray.Diff
                         (pair, diff) => new PackageDiffReportItem(pair.Key, pair.Value, diff))
                     .OrderByDescending(x => x.Diff.Diff);
 
-                var consolePackageDiffReport = new ConsolePackageDiffReport(results, packageDiffCommand.Verbose);
-                return new CommandResult(consolePackageDiffReport, 0, packageDiffCommand.ToString());
+                var report = packageDiffCommand.OutputFormat == ReportFormat.Text 
+                    ? new ConsolePackageDiffReport(results, packageDiffCommand.Verbose) 
+                    : new JsonPackageDiffReport(results) as TextReport;
+
+                return new CommandResult(report, 0, packageDiffCommand.ToString());
             }
             catch (Exception e)
             {

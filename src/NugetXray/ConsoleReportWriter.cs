@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace NugetXray
 {
-    public class ReportWriter
+    public class ConsoleReportWriter : IReportWriter
     {
         public void Write(IEnumerable<CommandResult> reports)
         {
@@ -33,6 +35,26 @@ namespace NugetXray
             }
 
             Console.ForegroundColor = defaultColor;
+        }
+    }
+
+    public interface IReportWriter
+    {
+        void Write(IEnumerable<CommandResult> reports);
+    }
+
+    internal class FileReportWriter : IReportWriter
+    {
+        private readonly string _outputFile;
+
+        public FileReportWriter(string outputFile)
+        {
+            _outputFile = outputFile;
+        }
+
+        public void Write(IEnumerable<CommandResult> reports)
+        {
+            File.WriteAllText(_outputFile, reports.First().Report.GetReport().First().Item2);
         }
     }
 }

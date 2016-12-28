@@ -22,7 +22,7 @@ namespace NugetXray.Duplicate
             {
                 errors++;
 
-                var diffMessage = $"{packageDuplicate.Versions.Select(x => x.Item1).Distinct().Count()} versions";
+                var diffMessage = $"{packageDuplicate.Versions.Select(x => x.SemanticVersion).Distinct().Count()} versions";
 
                 if (_verbose)
                 {

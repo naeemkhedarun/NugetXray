@@ -18,7 +18,7 @@ namespace NugetXray.Duplicate
 
             return duplicates.Select(x => new PackageDuplicate(
                 x.First().PackageReference, 
-                x.Select(y => Tuple.Create(y.PackageReference.PackageIdentity.Version as SemanticVersion, y.Config)).ToArray())).ToArray();
+                x.Select(y => new DuplicateVersion(y.Config, y.PackageReference.PackageIdentity.Version)).ToArray())).ToArray();
         }
     }
 }

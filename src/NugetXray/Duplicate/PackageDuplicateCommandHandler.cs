@@ -32,7 +32,21 @@ namespace NugetXray.Duplicate
                 var duplicates = new PackageDuplicateDetector().FindDuplicates(packages)
                     .OrderByDescending(x => x.Versions.Length);
 
-                var report = new TextPackageDuplicateReport(duplicates, packageDuplicateCommand.Verbose);
+                TextReport report = null;
+
+                switch (packageDuplicateCommand.OutputFormat)
+                {
+                    case ReportFormat.Text:
+                        report = new TextPackageDuplicateReport(duplicates, packageDuplicateCommand.Verbose);
+                        break;
+                    case ReportFormat.Json:
+                        report = new JsonPackageDuplicateReport(duplicates);
+                        break;
+                    case ReportFormat.Html:
+                        report = new HtmlPackageDuplicateReport(duplicates);
+                        break;
+                }
+
                 return new CommandResult(report, duplicates.Any() ? 1 : 0, packageDuplicateCommand.ToString());
             }
             catch (Exception e)

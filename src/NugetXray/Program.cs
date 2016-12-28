@@ -21,7 +21,7 @@ namespace NugetXray
             container.Register<CachedPackageReader>();
 
             var process = container.GetInstance<CommandProcessor>().Process(args);
-            new ReportWriter().Write(process);  
+            
             return process.Max(x => x.Code);
         }
     }

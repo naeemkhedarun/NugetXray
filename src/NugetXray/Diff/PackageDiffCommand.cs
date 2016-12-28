@@ -3,7 +3,7 @@
 namespace NugetXray.Diff
 {
     [Verb("diff", HelpText = "")]
-    class PackageDiffCommand
+    class PackageDiffCommand : Command
     {
         [Option('d', "directory", Required = true, HelpText = "The directory to be recursively scanned for packages.config.")]
         public string Directory { get; set; }
