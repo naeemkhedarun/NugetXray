@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using CommandLine;
 using LightInject;
-using NugetXray.Batch;
+using Newtonsoft.Json;
 using NugetXray.Diff;
 using NugetXray.Duplicate;
 
@@ -15,7 +18,6 @@ namespace NugetXray
             container.Register<CommandProcessor>();
             container.Register<PackageDiffCommandHandler>();
             container.Register<PackageDuplicateCommandHandler>();
-            container.Register<BatchCommandHandler>();
             container.Register<CachedPackageReader>();
 
             var process = container.GetInstance<CommandProcessor>().Process(args);
