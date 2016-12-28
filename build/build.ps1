@@ -53,7 +53,7 @@ if($pushPackage)
                                --name "windows-x64-nugetxray-$version" `
                                --file $zipPath
 
-    nuget push NugetXray*.nupkg
+    nuget push NugetXray*.nupkg -Source https://www.nuget.org/api/v2/package
 }
 
 popd
