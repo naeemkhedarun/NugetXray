@@ -14,22 +14,22 @@ namespace NugetXray
             _handlers = handlers;
         }
 
-        public CommandResult[] Process(string[] args)
+        public CommandResult Process(string[] args)
         {
             var result = Parser.Default.ParseArguments(args, _handlers.Select(x => x.CommandType).ToArray());
 
             CommandProcessorReport report = null;
 
-            var reports = new CommandResult[0];
-            result.WithParsed(o => reports = Process(o));
+            CommandResult successfulReport = null;
+            result.WithParsed(o => successfulReport = Process(o));
             result.WithNotParsed(e => report = new CommandProcessorReport(e));
 
-            return reports.Any() ? reports : new[] {new CommandResult(report, 1, "No command run.")};
+            return successfulReport ?? new CommandResult(report, 1, "No command run.");
         }
 
-        private CommandResult[] Process(object o)
+        private CommandResult Process(object o)
         {
-            var commandResults = Task.WhenAll(_handlers.Where(x => x.CanHandle(o.GetType())).Select(x => x.Execute(o))).Result;
+            var commandResult = _handlers.First(x => x.CanHandle(o.GetType())).Execute(o).Result;
 
             var command = (Command) o;
 
@@ -42,10 +42,10 @@ namespace NugetXray
 
             foreach (var reportWriter in writers)
             {
-                reportWriter.Write(commandResults);
+                reportWriter.Write(commandResult);
             }
 
-            return commandResults;
+            return commandResult;
         }
     }
 

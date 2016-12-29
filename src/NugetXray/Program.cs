@@ -1,9 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using CommandLine;
-using LightInject;
-using Newtonsoft.Json;
+﻿using LightInject;
 using NugetXray.Diff;
 using NugetXray.Duplicate;
 
@@ -22,7 +17,7 @@ namespace NugetXray
 
             var process = container.GetInstance<CommandProcessor>().Process(args);
             
-            return process.Max(x => x.Code);
+            return process.Code;
         }
     }
 }

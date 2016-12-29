@@ -1,37 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace NugetXray
 {
     public class ConsoleReportWriter : IReportWriter
     {
-        public void Write(IEnumerable<CommandResult> reports)
+        public void Write(CommandResult report)
         {
             var defaultColor = Console.ForegroundColor;
 
-            foreach (var commandResult in reports.Where(x => x.Report != null))
+            foreach (var tuple in report.Report.GetReport())
             {
-                foreach (var tuple in commandResult.Report.GetReport())
+                switch (tuple.Item1)
                 {
-                    switch (tuple.Item1)
-                    {
-                        case LogLevel.Information:
-                            Console.ForegroundColor = defaultColor;
-                            break;
-                        case LogLevel.Warning:
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            break;
-                        case LogLevel.Error:
-                            Console.ForegroundColor = ConsoleColor.Red;
-
-                            break;
-                    }
-                    Console.WriteLine(tuple.Item2);
+                    case LogLevel.Information:
+                        Console.ForegroundColor = defaultColor;
+                        break;
+                    case LogLevel.Warning:
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        break;
+                    case LogLevel.Error:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        break;
                 }
+                Console.WriteLine(tuple.Item2);
             }
 
             Console.ForegroundColor = defaultColor;
@@ -40,7 +34,7 @@ namespace NugetXray
 
     public interface IReportWriter
     {
-        void Write(IEnumerable<CommandResult> reports);
+        void Write(CommandResult report);
     }
 
     internal class FileReportWriter : IReportWriter
@@ -52,9 +46,9 @@ namespace NugetXray
             _outputFile = outputFile;
         }
 
-        public void Write(IEnumerable<CommandResult> reports)
+        public void Write(CommandResult report)
         {
-            File.WriteAllText(_outputFile, reports.First().Report.GetReport().First().Item2);
+            File.WriteAllText(_outputFile, report.Report.GetReport().First().Item2);
         }
     }
 }
