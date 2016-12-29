@@ -24,7 +24,7 @@ dotnet test
 Push-Location "$root/src/NugetXray"
 $version = Get-IncrementedVersion
 Set-Version $version
-dotnet publish --runtime win7-x64
+dotnet publish --runtime win7-x64 --configuration release
 
 rm *.nupkg,*.zip
 nuget pack NugetXray.nuspec -NoPackageAnalysis -Properties "version=$version"
