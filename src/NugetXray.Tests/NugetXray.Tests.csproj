@@ -33,6 +33,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk">
       <Version>15.0.0-preview-20161216-01</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.App" Version="1.1.0" />
     <PackageReference Include="xunit.runner.visualstudio">
       <Version>2.2.0-beta4-build1194</Version>
     </PackageReference>
