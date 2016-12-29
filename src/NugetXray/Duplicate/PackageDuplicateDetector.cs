@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NugetXray.Diff;
 using NuGet.Packaging;
-using NuGet.Versioning;
 
 namespace NugetXray.Duplicate
 {

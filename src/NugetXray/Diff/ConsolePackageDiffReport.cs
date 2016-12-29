@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using NuGet.Versioning;
 using System.Linq;
+using NuGet.Versioning;
 
 namespace NugetXray.Diff
 {
@@ -46,7 +46,7 @@ namespace NugetXray.Diff
                         diffMessage,
                         packageDiffReport.Configs.Length);
 
-                if (packageDiffReport.Diff.Diff >= new SemanticVersion(0, 0, 0))
+                if (packageDiffReport.Diff.Diff >= new SemanticVersion(1, 0, 0))
                 {
                     WriteError(log);
                     errors++;
@@ -56,7 +56,7 @@ namespace NugetXray.Diff
                     WriteWarning(log);
                     warnings++;
                 }
-                else if (packageDiffReport.Diff.Diff >= new SemanticVersion(0, 0, 1))
+                else if (packageDiffReport.Diff.Diff > new SemanticVersion(0, 0, 0))
                 {
                     Write(log);
                 }

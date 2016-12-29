@@ -36,9 +36,22 @@ namespace NugetXray.Diff
                         (pair, diff) => new PackageDiffReportItem(pair.Key, pair.Value, diff))
                     .OrderByDescending(x => x.Diff.Diff);
 
-                var report = packageDiffCommand.OutputFormat == ReportFormat.Text 
-                    ? new ConsolePackageDiffReport(results, packageDiffCommand.Verbose) 
-                    : new JsonPackageDiffReport(results) as TextReport;
+                TextReport report;
+
+                switch (packageDiffCommand.OutputFormat)
+                {
+                    case ReportFormat.Text:
+                        report = new ConsolePackageDiffReport(results, packageDiffCommand.Verbose);
+                        break;
+                    case ReportFormat.Json:
+                        report = new JsonPackageDiffReport(results);
+                        break;
+                    case ReportFormat.Html:
+                        report = new HtmlPackageDiffReport(results);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
 
                 return new CommandResult(report, 0, packageDiffCommand.ToString());
             }

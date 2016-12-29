@@ -40,13 +40,13 @@
         var results = @@data@@;
 
         rivets.formatters.length = function (value) {
-            return value.length
+            return value.length;
         }
 
         rivets.formatters.distinct = function (versions) {
             var counts = {};
             for (var i = 0; i < versions.length; i++) {
-                var v = rivets.formatters.versionFormat(versions[i].SemanticVersion)
+                var v = rivets.formatters.versionFormat(versions[i].SemanticVersion);
                 counts[v] = 1 + (counts[v] || 0);
             }
 
@@ -56,7 +56,7 @@
         rivets.formatters.versionFormat = function (version) {
             var formattedValue = version.Major + "." + version.Minor + "." + version.Patch;
             if (version.IsPrerelease) {
-                formattedValue += "-" + version.Release
+                formattedValue += "-" + version.Release;
             }
             return formattedValue;
         }

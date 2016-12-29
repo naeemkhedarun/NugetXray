@@ -1,6 +1,6 @@
 ﻿using System.IO;
-using Xunit;
 using System.Linq;
+using Xunit;
 
 namespace NugetXray.Tests
 {

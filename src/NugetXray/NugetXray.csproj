@@ -15,6 +15,7 @@
     <EmbeddedResource Include="compiler\resources\**\*" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Diff\DiffPackages.html" />
     <EmbeddedResource Include="Duplicate\DuplicatePackages.html" />
   </ItemGroup>
   <ItemGroup>

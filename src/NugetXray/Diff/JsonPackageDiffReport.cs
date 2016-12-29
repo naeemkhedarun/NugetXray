@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
+using NuGet.Versioning;
 
 namespace NugetXray.Diff
 {
@@ -14,7 +16,9 @@ namespace NugetXray.Diff
 
         protected override void CreateReport()
         {
-            Write(JsonConvert.SerializeObject(_results, Formatting.Indented));
+            Write(JsonConvert.SerializeObject(
+                _results.Where(x => x.Diff.Diff > new SemanticVersion(0, 0, 0)), 
+                Formatting.Indented));
         }
     }
 }
