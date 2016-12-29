@@ -32,7 +32,7 @@ nuget pack NugetXray.nuspec -NoPackageAnalysis -Properties "version=$version"
 $zipPath = [System.IO.Path]::Combine((resolve-path .), "NugetXray.$version.zip")
 Add-Type -As System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::CreateFromDirectory(
-    (resolve-path "bin\Debug\netcoreapp1.1\win7-x64\"), 
+    (resolve-path "bin\Release\netcoreapp1.1\win7-x64\"), 
     $zipPath, 
     "Optimal", 
     $false)
