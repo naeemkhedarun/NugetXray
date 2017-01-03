@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using CommandLine;
 
 namespace NugetXray
@@ -19,10 +18,15 @@ namespace NugetXray
             var result = Parser.Default.ParseArguments(args, _handlers.Select(x => x.CommandType).ToArray());
 
             CommandProcessorReport report = null;
-
             CommandResult successfulReport = null;
-            result.WithParsed(o => successfulReport = Process(o));
-            result.WithNotParsed(e => report = new CommandProcessorReport(e));
+
+            result.WithParsed(o =>
+            {
+                var validationErrors = ((ICommandValidator) o).GetErrors().ToList();
+                successfulReport = validationErrors.Any() 
+                    ? new CommandResult(new CommandProcessorReport(validationErrors), -1, "Some arguments have failed validation.") 
+                    : Process(o);
+            }).WithNotParsed(e => report = new CommandProcessorReport(e.Select(x => x.Tag.ToString())));
 
             return successfulReport ?? new CommandResult(report, 1, "No command run.");
         }
@@ -48,5 +52,4 @@ namespace NugetXray
             return commandResult;
         }
     }
-
 }

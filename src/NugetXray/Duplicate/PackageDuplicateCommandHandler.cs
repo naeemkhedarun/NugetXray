@@ -34,7 +34,7 @@ namespace NugetXray.Duplicate
 
                 TextReport report = null;
 
-                switch (packageDuplicateCommand.OutputFormat)
+                switch ((ReportFormat)Enum.Parse(typeof(ReportFormat), packageDuplicateCommand.OutputFormat, true))
                 {
                     case ReportFormat.Text:
                         report = new TextPackageDuplicateReport(duplicates, packageDuplicateCommand.Verbose);

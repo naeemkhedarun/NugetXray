@@ -1,4 +1,5 @@
-﻿using LightInject;
+﻿using System;
+using LightInject;
 using NugetXray.Diff;
 using NugetXray.Duplicate;
 
@@ -16,7 +17,11 @@ namespace NugetXray
             container.Register<CachedPackageReader>();
 
             var process = container.GetInstance<CommandProcessor>().Process(args);
-            
+
+            new ConsoleReportWriter().Write(process);
+
+            Environment.Exit(process.Code);
+
             return process.Code;
         }
     }

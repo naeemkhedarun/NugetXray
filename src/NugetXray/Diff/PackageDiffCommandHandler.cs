@@ -38,7 +38,7 @@ namespace NugetXray.Diff
 
                 TextReport report;
 
-                switch (packageDiffCommand.OutputFormat)
+                switch ((ReportFormat)Enum.Parse(typeof(ReportFormat), packageDiffCommand.OutputFormat, true))
                 {
                     case ReportFormat.Text:
                         report = new ConsolePackageDiffReport(results, packageDiffCommand.Verbose);

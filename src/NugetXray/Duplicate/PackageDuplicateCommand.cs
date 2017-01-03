@@ -1,4 +1,6 @@
-﻿using CommandLine;
+﻿using System.Collections.Generic;
+using System.IO;
+using CommandLine;
 
 namespace NugetXray.Duplicate
 {
@@ -14,6 +16,17 @@ namespace NugetXray.Duplicate
         public override string ToString()
         {
             return $"Duplicate {Directory}";
+        }
+
+        public override IEnumerable<string> GetErrors()
+        {
+            foreach (var error in base.GetErrors())
+            {
+                yield return error;
+            }
+
+            if(!new DirectoryInfo(Directory).Exists)
+                yield return $"Directory {Directory} does not exist.";
         }
     }
 }

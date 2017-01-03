@@ -41,9 +41,9 @@ namespace NugetXray
 
     public class CommandProcessorReport : TextReport
     {
-        private readonly IEnumerable<Error> _errors;
+        private readonly IEnumerable<string> _errors;
 
-        public CommandProcessorReport(IEnumerable<Error> errors)
+        public CommandProcessorReport(IEnumerable<string> errors)
         {
             this._errors = errors;
         }
@@ -52,7 +52,7 @@ namespace NugetXray
         {
             foreach (var error in _errors)
             {
-                WriteError(error.Tag.ToString());
+                WriteError(error);
             }
         }
     }

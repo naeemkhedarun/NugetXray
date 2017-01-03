@@ -1,4 +1,7 @@
-﻿using CommandLine;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using CommandLine;
 
 namespace NugetXray.Diff
 {
@@ -17,6 +20,20 @@ namespace NugetXray.Diff
         public override string ToString()
         {
             return $"Diff {Directory}";
+        }
+
+        public override IEnumerable<string> GetErrors()
+        {
+            foreach (var error in base.GetErrors())
+            {
+                yield return error;
+            }
+
+            if (!new DirectoryInfo(Directory).Exists)
+                yield return $"Directory {Directory} does not exist.";
+
+            if(!Uri.IsWellFormedUriString(Source, UriKind.RelativeOrAbsolute))
+                yield return $"Uri {Source} is not a valid location.";
         }
     }
 }
