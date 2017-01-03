@@ -23,7 +23,7 @@ namespace NugetXray.Duplicate
         public async Task<CommandResult> Execute(object command)
         {
             var packageDuplicateCommand = (PackageDuplicateCommand) command;
-            Console.WriteLine($"Scanning {packageDuplicateCommand.Directory} for packages.configs.");
+            Console.WriteLine($"Scanning {packageDuplicateCommand.Directory} for packages.configs.{Environment.NewLine}");
 
             try
             {

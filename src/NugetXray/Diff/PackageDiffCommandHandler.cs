@@ -23,8 +23,8 @@ namespace NugetXray.Diff
         {
             var packageDiffCommand = (PackageDiffCommand) command;
 
-            Console.WriteLine($"Scanning {packageDiffCommand.Directory} against {packageDiffCommand.Source}.");
-
+            Console.WriteLine($"Scanning {packageDiffCommand.Directory} against {packageDiffCommand.Source}.{Environment.NewLine}");
+            
             try
             {
                 var packages = await _cachedPackageReader.GetPackagesAsync(packageDiffCommand.Directory);

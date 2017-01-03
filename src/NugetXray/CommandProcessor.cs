@@ -24,11 +24,20 @@ namespace NugetXray
             {
                 var validationErrors = ((ICommandValidator) o).GetErrors().ToList();
                 successfulReport = validationErrors.Any() 
-                    ? new CommandResult(new CommandProcessorReport(validationErrors), -1, "Some arguments have failed validation.") 
+                    ? FailedProcess(validationErrors) 
                     : Process(o);
             }).WithNotParsed(e => report = new CommandProcessorReport(e.Select(x => x.Tag.ToString())));
 
             return successfulReport ?? new CommandResult(report, 1, "No command run.");
+        }
+
+        private static CommandResult FailedProcess(List<string> validationErrors)
+        {
+            var failedProcess = new CommandResult(new CommandProcessorReport(validationErrors), -1, "Some arguments have failed validation.");
+
+            new ConsoleReportWriter().Write(failedProcess);
+
+            return failedProcess;
         }
 
         private CommandResult Process(object o)

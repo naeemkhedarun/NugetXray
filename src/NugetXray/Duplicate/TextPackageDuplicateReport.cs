@@ -23,27 +23,29 @@ namespace NugetXray.Duplicate
                 errors++;
 
                 var diffMessage = $"{packageDuplicate.Versions.Select(x => x.SemanticVersion).Distinct().Count()} versions";
-
+                
                 if (_verbose)
                 {
                     WriteError($"{packageDuplicate.PackageReference.PackageIdentity.Id} | {diffMessage}");
-
-                    Write(string.Empty);
-                    foreach (var version in packageDuplicate.Versions)
+                    
+                    var groupedByVersion = packageDuplicate.Versions.GroupBy(x => x.SemanticVersion).OrderBy(x => x.Key);
+                    foreach (var version in groupedByVersion)
                     {
-                        WriteError($"  {version}");
+                        WriteError($"  {version.Key}");
+                        foreach (var duplicateVersion in version)
+                        {
+                            WriteError($"    {duplicateVersion.PackageConfig}");
+                        }
                     }
-                    Write(string.Empty);
                 }
                 else
                 {
-                    WriteError(
-                        $"{packageDuplicate.PackageReference.PackageIdentity.Id.PadRight(70)} | {diffMessage.PadRight(10)}");
+                    WriteError($"{packageDuplicate.PackageReference.PackageIdentity.Id.PadRight(70)} | {diffMessage.PadRight(10)}");
                 }
             }
-            
+
             Write(string.Empty);
-            WriteError($"Errors:   {errors}");
+            WriteError($"Errors: {errors}");
             Write(string.Empty);
         }
     }
