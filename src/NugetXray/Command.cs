@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using CommandLine;
-using static NugetXray.ReportFormat;
 #pragma warning disable 168
 
 namespace NugetXray
@@ -12,7 +11,7 @@ namespace NugetXray
         [Option('o', "outputFile", Required = false, HelpText = "The path to write the report to.")]
         public string OutputFile { get; set; }
 
-        [Option('f', "OutputFormat", Required = false, HelpText = "The format of the report to write: Text or Json.", Default = Text)]
+        [Option('f', "OutputFormat", Required = false, HelpText = "The format of the report to write: Text or Json.", Default = "Text")]
         public string OutputFormat { get; set; }
 
         public virtual IEnumerable<string> GetErrors()
