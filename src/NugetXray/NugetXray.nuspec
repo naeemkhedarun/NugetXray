@@ -13,7 +13,6 @@
     <tags>nuget build analysis</tags>
   </metadata>
   <files>
-    <file src="bin\Debug\netcoreapp1.1\win7-x64\**" target="tools" />
-    <file src="bin\Debug\netcoreapp1.1\win7-x64\publish\**" target="tools\publish" />
+    <file src="bin\Release\netcoreapp1.1\win7-x64\publish\**" target="tools\" />
   </files>
 </package>
