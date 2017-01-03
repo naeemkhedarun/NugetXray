@@ -19,21 +19,24 @@ function Set-Version($version){
 $root = (Resolve-Path ../)
 
 Push-Location "$root/src/NugetXray.Tests"
+dotnet restore
 dotnet test 
 
 Push-Location "$root/src/NugetXray"
+Remove-Item -Recurse -Force "bin","obj"
 $version = Get-IncrementedVersion
 Set-Version $version
-dotnet publish --runtime win7-x64 --configuration release
+dotnet restore ./NugetXray.Package.csproj
+dotnet publish ./NugetXray.Package.csproj --runtime win7-x64 --configuration Release
 
-rm *.nupkg,*.zip
+Remove-Item *.nupkg,*.zip
 nuget pack NugetXray.nuspec -NoPackageAnalysis -Properties "version=$version"
 
 $zipPath = [System.IO.Path]::Combine((resolve-path .), "NugetXray.$version.zip")
 Add-Type -As System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::CreateFromDirectory(
     (resolve-path "bin\Release\netcoreapp1.1\win7-x64\"), 
-    $zipPath, 
+    $zipPath,
     "Optimal", 
     $false)
 
