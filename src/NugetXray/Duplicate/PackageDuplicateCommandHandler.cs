@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NugetXray.Diff;
+using NuGet.Versioning;
 
 namespace NugetXray.Duplicate
 {
@@ -20,7 +21,7 @@ namespace NugetXray.Duplicate
             return _type == command;
         }
 
-        public async Task<CommandResult> Execute(object command)
+        public async Task<int> Execute(object command)
         {
             var packageDuplicateCommand = (PackageDuplicateCommand) command;
             Console.WriteLine($"Scanning {packageDuplicateCommand.Directory} for packages.configs.{Environment.NewLine}");
@@ -32,27 +33,26 @@ namespace NugetXray.Duplicate
                 var duplicates = new PackageDuplicateDetector().FindDuplicates(packages)
                     .OrderByDescending(x => x.Versions.Length);
 
-                TextReport report = null;
+                var textReport = new TextPackageDuplicateReport().CreateReport(duplicates, packageDuplicateCommand.Verbose);
+                Console.WriteLine(string.Join(Environment.NewLine, textReport));
 
-                switch ((ReportFormat)Enum.Parse(typeof(ReportFormat), packageDuplicateCommand.OutputFormat, true))
+                new ReportWriter().WriteReport(packageDuplicateCommand, () =>
                 {
-                    case ReportFormat.Text:
-                        report = new TextPackageDuplicateReport(duplicates, packageDuplicateCommand.Verbose);
-                        break;
-                    case ReportFormat.Json:
-                        report = new JsonPackageDuplicateReport(duplicates);
-                        break;
-                    case ReportFormat.Html:
-                        report = new HtmlPackageDuplicateReport(duplicates);
-                        break;
-                }
+                    return string.Join(Environment.NewLine, textReport);
+                }, () =>
+                {
+                    return duplicates;
+                }, () =>
+                {
+                    return duplicates;
+                });
 
-                return new CommandResult(report, duplicates.Any() ? 1 : 0, packageDuplicateCommand.ToString());
+                return 0;
             }
             catch (Exception e)
             {
                 Console.WriteLine(packageDuplicateCommand.Verbose ? e.ToString() : e.Message);
-                return new CommandResult(null, 1, packageDuplicateCommand.ToString());
+                return -1;
             }
         }
 

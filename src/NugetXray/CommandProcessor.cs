@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CommandLine;
 
@@ -13,52 +14,31 @@ namespace NugetXray
             _handlers = handlers;
         }
 
-        public CommandResult Process(string[] args)
+        public int Process(string[] args)
         {
             var result = Parser.Default.ParseArguments(args, _handlers.Select(x => x.CommandType).ToArray());
 
-            CommandProcessorReport report = null;
-            CommandResult successfulReport = null;
+            int errorCode = -1;
 
             result.WithParsed(o =>
             {
-                var validationErrors = ((ICommandValidator) o).GetErrors().ToList();
-                successfulReport = validationErrors.Any() 
-                    ? FailedProcess(validationErrors) 
-                    : Process(o);
-            }).WithNotParsed(e => report = new CommandProcessorReport(e.Select(x => x.Tag.ToString())));
+                var validationErrors = ((ICommandValidator)o).GetErrors().ToList();
+                errorCode = validationErrors.Any()
+                    ? FailedProcess(validationErrors)
+                    : _handlers.First(x => x.CommandType == o.GetType()).Execute(o).Result;
+            }).WithNotParsed(e => errorCode = FailedProcess(e.Select(x => x.Tag.ToString())));
 
-            return successfulReport ?? new CommandResult(report, 1, "No command run.");
+            return errorCode;
         }
 
-        private static CommandResult FailedProcess(List<string> validationErrors)
+        private static int FailedProcess(IEnumerable<string> validationErrors)
         {
-            var failedProcess = new CommandResult(new CommandProcessorReport(validationErrors), -1, "Some arguments have failed validation.");
-
-            new ConsoleReportWriter().Write(failedProcess);
-
-            return failedProcess;
-        }
-
-        private CommandResult Process(object o)
-        {
-            var commandResult = _handlers.First(x => x.CanHandle(o.GetType())).Execute(o).Result;
-
-            var command = (Command) o;
-
-            var writers = new List<IReportWriter> {new ConsoleReportWriter()};
-           
-            if (!string.IsNullOrEmpty(command.OutputFile))
+            foreach (var validationError in validationErrors)
             {
-                writers.Add(new FileReportWriter(command.OutputFile));
+                Console.WriteLine(validationError);
             }
 
-            foreach (var reportWriter in writers)
-            {
-                reportWriter.Write(commandResult);
-            }
-
-            return commandResult;
+            return -1;
         }
     }
 }

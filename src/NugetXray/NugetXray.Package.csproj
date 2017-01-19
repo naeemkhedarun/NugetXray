@@ -15,8 +15,8 @@
     <EmbeddedResource Include="compiler\resources\**\*" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Diff\DiffPackages.html" />
-    <EmbeddedResource Include="Duplicate\DuplicatePackages.html" />
+    <EmbeddedResource Include="Diff\PackageDiffCommand.html" />
+    <EmbeddedResource Include="Duplicate\PackageDuplicateCommand.html" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommandLineParser.Unofficial" Version="2.0.275" />

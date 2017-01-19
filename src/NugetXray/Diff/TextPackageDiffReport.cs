@@ -5,11 +5,8 @@ using NuGet.Versioning;
 
 namespace NugetXray.Diff
 {
-    internal class ConsolePackageDiffReport : TextReport
+    internal class TextPackageDiffReport
     {
-        private readonly IEnumerable<PackageDiffReportItem> _results;
-        private readonly bool _verbose;
-
         private readonly string _fullTemplate = @"{0,-70} | {1,10} | {2,3} configs";
 
         private readonly string _verboseTemplate = @"{0} | -{1}
@@ -17,27 +14,23 @@ namespace NugetXray.Diff
 
 ";
 
-        public ConsolePackageDiffReport(IEnumerable<PackageDiffReportItem> results, bool verbose)
+        public List<string> CreateReport(IEnumerable<PackageDiffReportItem> results, bool verbose)
         {
-            _results = results;
-            _verbose = verbose;
-        }
+            var messages = new List<string>();
 
-        protected override void CreateReport()
-        {
             int errors = 0, warnings = 0;
 
-            if (!_verbose)
+            if (!verbose)
             {
-                Write(string.Format(_fullTemplate, "package", "version", ""));
-                Write(new string('-', 71) + "+" + new string('-', 12) + "+" + new string('-', 12));
+                messages.Add(string.Format(_fullTemplate, "package", "version", ""));
+                messages.Add(new string('-', 71) + "+" + new string('-', 12) + "+" + new string('-', 12));
             }
 
-            foreach (var packageDiffReport in _results)
+            foreach (var packageDiffReport in results)
             {
                 var diffMessage = packageDiffReport.Diff.WasFoundInFeed ? packageDiffReport.Diff.Diff.ToString() : "Not found.";
 
-                var log = _verbose
+                var log = verbose
                     ? string.Format(_verboseTemplate,
                         packageDiffReport.Package.PackageIdentity, diffMessage,
                         string.Join(Environment.NewLine, packageDiffReport.Configs.Select(x => $"  {x}")))
@@ -48,20 +41,22 @@ namespace NugetXray.Diff
 
                 if (packageDiffReport.Diff.Diff >= new SemanticVersion(1, 0, 0))
                 {
-                    WriteError(log);
+                    messages.Add(log);
                     errors++;
                 }
                 else if (packageDiffReport.Diff.Diff >= new SemanticVersion(0, 1, 0))
                 {
-                    WriteWarning(log);
+                    messages.Add(log);
                     warnings++;
                 }
                 else if (packageDiffReport.Diff.Diff > new SemanticVersion(0, 0, 0))
                 {
-                    Write(log);
+                    messages.Add(log);
                 }
             }
-            Write($"Errors: {errors}\n{warnings}\n");
+            messages.Add($"Errors: {errors}\n{warnings}\n");
+
+            return messages;
         }
     }
 }

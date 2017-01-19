@@ -5,8 +5,7 @@ namespace NugetXray
 {
     public interface ICommand
     {
-        bool CanHandle(Type command);
-        Task<CommandResult> Execute(object command);
+        Task<int> Execute(object command);
         Type CommandType { get; }
     }
 }

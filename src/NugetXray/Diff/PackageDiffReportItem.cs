@@ -1,7 +1,7 @@
 ﻿using NugetXray.Diff;
 using NuGet.Packaging;
 
-namespace NugetXray
+namespace NugetXray.Diff
 {
     public class PackageDiffReportItem
     {

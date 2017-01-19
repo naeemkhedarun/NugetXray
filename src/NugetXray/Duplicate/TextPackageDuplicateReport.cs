@@ -1,52 +1,48 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using NugetXray.Diff;
 
 namespace NugetXray.Duplicate
 {
-    internal class TextPackageDuplicateReport : TextReport
+    internal class TextPackageDuplicateReport
     {
-        private readonly IOrderedEnumerable<PackageDuplicate> _results;
-        private readonly bool _verbose;
-
-        public TextPackageDuplicateReport(IOrderedEnumerable<PackageDuplicate> results, bool verbose)
+        public List<string> CreateReport(IOrderedEnumerable<PackageDuplicate> results, bool verbose)
         {
-            _results = results;
-            _verbose = verbose;
-        }
+            var messages = new List<string>();
 
-        protected override void CreateReport()
-        {
             var errors = 0;
 
-            foreach (var packageDuplicate in _results)
+            foreach (var packageDuplicate in results)
             {
                 errors++;
 
                 var diffMessage = $"{packageDuplicate.Versions.Select(x => x.SemanticVersion).Distinct().Count()} versions";
                 
-                if (_verbose)
+                if (verbose)
                 {
-                    WriteError($"{packageDuplicate.PackageReference.PackageIdentity.Id} | {diffMessage}");
+                    messages.Add($"{packageDuplicate.PackageReference.PackageIdentity.Id} | {diffMessage}");
                     
                     var groupedByVersion = packageDuplicate.Versions.GroupBy(x => x.SemanticVersion).OrderBy(x => x.Key);
                     foreach (var version in groupedByVersion)
                     {
-                        WriteError($"  {version.Key}");
+                        messages.Add($"  {version.Key}");
                         foreach (var duplicateVersion in version)
                         {
-                            WriteError($"    {duplicateVersion.PackageConfig}");
+                            messages.Add($"    {duplicateVersion.PackageConfig}");
                         }
                     }
                 }
                 else
                 {
-                    WriteError($"{packageDuplicate.PackageReference.PackageIdentity.Id.PadRight(70)} | {diffMessage.PadRight(10)}");
+                    messages.Add($"{packageDuplicate.PackageReference.PackageIdentity.Id.PadRight(70)} | {diffMessage.PadRight(10)}");
                 }
             }
 
-            Write(string.Empty);
-            WriteError($"Errors: {errors}");
-            Write(string.Empty);
+            messages.Add(string.Empty);
+            messages.Add($"Errors: {errors}");
+            messages.Add(string.Empty);
+
+            return messages;
         }
     }
 }

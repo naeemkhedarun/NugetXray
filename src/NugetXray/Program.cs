@@ -18,9 +18,9 @@ namespace NugetXray
 
             var process = container.GetInstance<CommandProcessor>().Process(args);
 
-            Environment.Exit(process.Code);
+            Environment.Exit(process);
 
-            return process.Code;
+            return process;
         }
     }
 }

@@ -13,6 +13,12 @@ namespace NugetXray
 
         [Option('f', "OutputFormat", Required = false, HelpText = "The format of the report to write: Text or Json.", Default = "Text")]
         public string OutputFormat { get; set; }
+        public ReportFormat GetReportFormat()
+        {
+            ReportFormat reportFormat;
+            Enum.TryParse(OutputFormat, true, out reportFormat);
+            return reportFormat;
+        }
 
         public virtual IEnumerable<string> GetErrors()
         {

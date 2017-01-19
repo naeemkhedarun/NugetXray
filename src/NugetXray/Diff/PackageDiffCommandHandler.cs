@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using NuGet.Versioning;
 
 namespace NugetXray.Diff
 {
@@ -14,12 +15,7 @@ namespace NugetXray.Diff
             _cachedPackageReader = cachedPackageReader;
         }
 
-        public bool CanHandle(Type command)
-        {
-            return _type == command;
-        }
-
-        public async Task<CommandResult> Execute(object command)
+        public async Task<int> Execute(object command)
         {
             var packageDiffCommand = (PackageDiffCommand) command;
 
@@ -36,30 +32,27 @@ namespace NugetXray.Diff
                         (pair, diff) => new PackageDiffReportItem(pair.Key, pair.Value, diff))
                     .OrderByDescending(x => x.Diff.Diff);
 
-                TextReport report;
+                var textReport = new TextPackageDiffReport().CreateReport(results, packageDiffCommand.Verbose);
+                Console.WriteLine(string.Join(Environment.NewLine, textReport));
 
-                switch ((ReportFormat)Enum.Parse(typeof(ReportFormat), packageDiffCommand.OutputFormat, true))
+                new ReportWriter().WriteReport(packageDiffCommand, () =>
                 {
-                    case ReportFormat.Text:
-                        report = new ConsolePackageDiffReport(results, packageDiffCommand.Verbose);
-                        break;
-                    case ReportFormat.Json:
-                        report = new JsonPackageDiffReport(results);
-                        break;
-                    case ReportFormat.Html:
-                        report = new HtmlPackageDiffReport(results);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                    return string.Join(Environment.NewLine, textReport);
+                }, () =>
+                {
+                    return results.Where(x => x.Diff.Diff > new SemanticVersion(0, 0, 0));
+                }, () =>
+                {
+                    return results.Where(x => x.Diff.Diff > new SemanticVersion(0, 0, 0));
+                });
 
-                return new CommandResult(report, 0, packageDiffCommand.ToString());
+                return 0;
             }
             catch (Exception e)
             {
                 Console.WriteLine(packageDiffCommand.Verbose ? e.ToString() : e.Message);
 
-                return new CommandResult(null, 1, packageDiffCommand.ToString());
+                return -1;
             }
         }
 

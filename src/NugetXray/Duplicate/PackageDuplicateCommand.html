@@ -55,6 +55,11 @@
 
         rivets.formatters.versionFormat = function (version) {
             var formattedValue = version.Major + "." + version.Minor + "." + version.Patch;
+
+            if (version.Revision > 0) {
+                formattedValue = formattedValue + "." + version.Revision;
+            }
+
             if (version.IsPrerelease) {
                 formattedValue += "-" + version.Release;
             }
