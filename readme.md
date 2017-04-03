@@ -67,6 +67,9 @@ Newtonsoft.Json.6.0.8 | -3.0.0
   C:\git\ConveyorBelt\test\ConveyorBelt.Tooling.Test\packages.config
 ```
 
+A negative exit code is returned which you can use to fail your build. It is the number of packages which are one or 
+more major versions behind.
+
 ## Duplicate
 
 The duplicate command finds multiple versions of the same package. Multiple versions should be consolidated to a single version 
@@ -93,6 +96,8 @@ WindowsAzure.Storage | 2 versions
 
 Errors:   1
 ```
+
+A negative exit code is returned which you can use to fail your build. It is the number of packages which have duplicate versions.
 
 # Issues and feature requests
 
