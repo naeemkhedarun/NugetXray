@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NugetXray.Diff;
-using NuGet.Versioning;
 
 namespace NugetXray.Duplicate
 {
@@ -47,7 +46,7 @@ namespace NugetXray.Duplicate
                     return duplicates;
                 });
 
-                return 0;
+                return duplicates.Count() * -1;
             }
             catch (Exception e)
             {

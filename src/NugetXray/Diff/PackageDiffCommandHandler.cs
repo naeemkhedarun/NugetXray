@@ -30,7 +30,8 @@ namespace NugetXray.Diff
                 var results = consolidatedPackages.Zip(
                         await differ.GetPackageDiffsAsync(consolidatedPackages.Select(x => x.Key).ToArray()),
                         (pair, diff) => new PackageDiffReportItem(pair.Key, pair.Value, diff))
-                    .OrderByDescending(x => x.Diff.Diff);
+                    .OrderByDescending(x => x.Diff.Diff)
+                    .ToList();
 
                 var textReport = new TextPackageDiffReport().CreateReport(results, packageDiffCommand.Verbose);
                 Console.WriteLine(string.Join(Environment.NewLine, textReport));
@@ -46,7 +47,7 @@ namespace NugetXray.Diff
                     return results.Where(x => x.Diff.Diff > new SemanticVersion(0, 0, 0));
                 });
 
-                return 0;
+                return results.Count(x => x.Diff.Diff >= new SemanticVersion(1, 0, 0)) * -1;
             }
             catch (Exception e)
             {

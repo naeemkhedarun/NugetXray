@@ -10,7 +10,6 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="**\*.cs" />
     <EmbeddedResource Include="**\*.resx" />
     <EmbeddedResource Include="compiler\resources\**\*" />
   </ItemGroup>
@@ -20,13 +19,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommandLineParser.Unofficial" Version="2.0.275" />
-    <PackageReference Include="Microsoft.NETCore.App" Version="1.1.0" />
-    <PackageReference Include="NuGet.Packaging" Version="4.0.0-rc2" />
-    <PackageReference Include="NuGet.Protocol.Core.v3" Version="4.0.0-rc2" />
-    <PackageReference Include="NuGet.Protocol.Core.Types" Version="4.0.0-rc2" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.0" />
-    <PackageReference Include="LightInject" Version="5.0.0-RC1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.0" />
+    <PackageReference Include="Microsoft.NETCore.App" Version="1.1.1" />
+    <PackageReference Include="NuGet.Packaging" Version="4.0.0" />
+    <PackageReference Include="NuGet.Protocol.Core.v3" Version="4.0.0" />
+    <PackageReference Include="NuGet.Protocol.Core.Types" Version="4.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.1" />
+    <PackageReference Include="LightInject" Version="5.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
     <PackageReference Include="System.Linq" Version="4.3.0" />
     <PackageReference Include="System.Linq.Parallel" Version="4.3.0" />
   </ItemGroup>
