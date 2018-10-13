@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NugetXray", "src\NugetXray\NugetXray.csproj", "{2788ECF6-E246-4061-BF48-6C472194B32C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetXray.Tests", "src\NugetXray.Tests\NugetXray.Tests.csproj", "{03D13E43-591C-49E0-B2C6-73D13558332E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2788ECF6-E246-4061-BF48-6C472194B32C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2788ECF6-E246-4061-BF48-6C472194B32C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2788ECF6-E246-4061-BF48-6C472194B32C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2788ECF6-E246-4061-BF48-6C472194B32C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03D13E43-591C-49E0-B2C6-73D13558332E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03D13E43-591C-49E0-B2C6-73D13558332E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03D13E43-591C-49E0-B2C6-73D13558332E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03D13E43-591C-49E0-B2C6-73D13558332E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {04259947-2D2E-4E34-B6D8-B054AF1C30CD}
+	EndGlobalSection
+EndGlobal

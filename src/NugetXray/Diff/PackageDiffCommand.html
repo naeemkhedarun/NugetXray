@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Diff nuget packages</title>
+
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/m8tro-bootstrap/3.3.7/m8tro.min.css'>
+</head>
+
+<body>
+    <style>
+        body {
+            color: black;
+            background-color: white;
+        }
+    </style>
+
+    <div class="container">
+
+        <h1>NugetXray: Diff Packages </h1>
+
+        <div id="packages" class="row" rv-each-package="packages">
+            <div class="col-md-12">
+                <h2>{ package.Package.PackageIdentity.Id }<span class="badge">{package.Configs | length} references</span></h2>
+                <div class="progress progress-striped">
+                    <div rv-class="package.Diff.Diff | progressClass" rv-style="package.Diff.Diff | progress"></div>
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>Current</th>
+                            <th>Latest</th>
+                            <th>Difference</th>
+                        </tr>
+                        <tr>
+                            <td>{ package.Diff.Current | versionFormat }</td>
+                            <td>{ package.Diff.Latest | versionFormat }</td>
+                            <td>-{ package.Diff.Diff | versionFormat }</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <table class="table">
+                    <tr>
+                        <th>Configs</th>
+                    </tr>
+                    <tr rv-each-config="package.Configs">
+                        <td>{ config }</td>
+                    </tr>
+                </table>
+
+                <!--<table class="table">
+                    <tr>
+                        <th>Version</th>
+                        <th>Config</th>
+                    </tr>
+                    <tr rv-each-version="package.Versions">
+                        <td>{ version.SemanticVersion | versionFormat }</td>
+                        <td>{ version.PackageConfig }</td>
+                    </tr>
+                </table>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/rivets/0.9.6/rivets.bundled.min.js'></script>
+
+<script>
+    var results = @@data@@;
+
+    rivets.formatters.length = function (value) {
+        return value.length;
+    }
+
+    rivets.formatters.distinct = function (versions) {
+        var counts = {};
+        for (var i = 0; i < versions.length; i++) {
+            var v = rivets.formatters.versionFormat(versions[i].SemanticVersion);
+            counts[v] = 1 + (counts[v] || 0);
+        }
+
+        return Object.keys(counts).length;
+    }
+
+    rivets.formatters.versionFormat = function (version) {
+        var formattedValue = version.Major + "." + version.Minor + "." + version.Patch;
+
+        if (version.Revision > 0) {
+            formattedValue = formattedValue + "." + version.Revision;
+        }
+
+        if (version.IsPrerelease) {
+            formattedValue += "-" + version.Release;
+        }
+        return formattedValue;
+    }
+
+
+    function versionDiffToPercentage(version) {
+        if (version.Major > 0) {
+            return ((6 + Math.min(version.Major, 4)) * 10);
+        } else if (version.Minor > 0) {
+            return ((3 + Math.min(version.Minor, 3)) * 10);
+        }
+
+        return ((Math.min(version.Patch, 3)) * 10);
+    }
+
+    rivets.formatters.progressClass = function (version) {
+        var style = "progress-bar progress-bar-";
+        var percent = versionDiffToPercentage(version);
+
+        if (percent > 66) {
+            return style + "danger";
+        } else if (percent > 33) {
+            return style + "warning";
+        }
+        return style + "success";
+    }
+
+    rivets.formatters.progress = function (version) {
+        var style = "width: ";
+        style += versionDiffToPercentage(version);
+        return style + "%";
+    }
+
+    rivets.bind($('#packages'), {
+        packages: results
+    });
+</script>
+
+</body>
+</html>
