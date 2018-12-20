@@ -9,13 +9,14 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.3.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="NuGet.Packaging" Version="4.8.0" />
-    <PackageReference Include="NuGet.Packaging.Core" Version="4.8.0" />
-    <PackageReference Include="NuGet.Protocol" Version="4.8.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
+    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="NuGet.Packaging" Version="4.9.2" />
+    <PackageReference Include="NuGet.Packaging.Core" Version="4.9.2" />
+    <PackageReference Include="NuGet.Protocol" Version="4.9.2" />
   </ItemGroup>
 
 </Project>
