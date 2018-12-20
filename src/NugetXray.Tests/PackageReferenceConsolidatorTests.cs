@@ -19,7 +19,7 @@ namespace NugetXray.Tests
             };
 
             var result = PackageReferenceConsolidator.Consolidate(packages);
-            Assert.Equal(1, result.Count);
+            Assert.Single(result);
         }
     }
 }

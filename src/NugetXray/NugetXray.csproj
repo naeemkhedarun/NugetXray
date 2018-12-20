@@ -1,35 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-    <AssemblyName>NugetXray</AssemblyName>
     <OutputType>Exe</OutputType>
-    <RuntimeIdentifiers>win7-x64</RuntimeIdentifiers>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <StartupObject></StartupObject>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
+
   <ItemGroup>
-    <EmbeddedResource Include="**\*.resx" />
-    <EmbeddedResource Include="compiler\resources\**\*" />
+    <PackageReference Include="CommandLineParser" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="NuGet.Packaging" Version="4.9.2" />
+    <PackageReference Include="NuGet.Packaging.Core" Version="4.9.2" />
+    <PackageReference Include="NuGet.Protocol" Version="4.9.2" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Diff\PackageDiffCommand.html" />
-    <EmbeddedResource Include="Duplicate\PackageDuplicateCommand.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="CommandLineParser.Unofficial" Version="2.0.275" />
-    <PackageReference Include="Microsoft.NETCore.App" Version="1.1.1" />
-    <PackageReference Include="NuGet.Packaging" Version="4.0.0" />
-    <PackageReference Include="NuGet.Protocol.Core.v3" Version="4.0.0" />
-    <PackageReference Include="NuGet.Protocol.Core.Types" Version="4.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.1" />
-    <PackageReference Include="LightInject" Version="5.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
-    <PackageReference Include="System.Linq" Version="4.3.0" />
-    <PackageReference Include="System.Linq.Parallel" Version="4.3.0" />
-  </ItemGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
-  </PropertyGroup>
+
 </Project>

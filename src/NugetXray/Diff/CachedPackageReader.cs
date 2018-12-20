@@ -12,7 +12,7 @@ namespace NugetXray.Diff
         private readonly Dictionary<string, Task<Dictionary<string, PackageReference[]>>> _cache 
             = new Dictionary<string, Task<Dictionary<string, PackageReference[]>>>();
 
-        public async Task<Dictionary<string, PackageReference[]>> GetPackagesAsync(string directory)
+        public async Task<Dictionary<string, PackageReference[]>> GetPackagesAsync(string directory, PackageLocation packageLocation)
         {
             lock (_objectLock)
             {
@@ -21,9 +21,9 @@ namespace NugetXray.Diff
                     _cache[directory] = Task.Run(async () =>
                     {
                         var scanner = new PackageConfigurationScanner();
-                        var configs = scanner.Find(directory);
+                        var configs = scanner.Find(directory, packageLocation);
                         var reader = new BulkPackageConfigurationReader();
-                        var packages = await reader.GetPackagesAsync(configs.ToArray());
+                        var packages = await reader.GetPackagesAsync(configs.ToArray(), packageLocation);
                         return packages;
                     });
                 }

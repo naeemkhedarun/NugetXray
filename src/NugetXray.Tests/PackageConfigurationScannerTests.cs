@@ -11,7 +11,7 @@ namespace NugetXray.Tests
         {
             var scanner = new PackageConfigurationScanner();
 
-            var results = scanner.Find("MockRootFolder")
+            var results = scanner.Find("MockRootFolder", PackageLocation.Packages)
                 .Select(x => x.Replace(Directory.GetCurrentDirectory(), string.Empty));
 
             Assert.Equal(new []
@@ -19,6 +19,22 @@ namespace NugetXray.Tests
                 @"\MockRootFolder\packages.config",
                 @"\MockRootFolder\MockSubfolderOne\packages.config",
                 @"\MockRootFolder\MockSubfolderTwo\packages.config",
+            }, results);
+        }
+
+        [Fact]
+        public void CanFindCsprojConfigurations()
+        {
+            var scanner = new PackageConfigurationScanner();
+
+            var results = scanner.Find("MockRootFolder", PackageLocation.Csproj)
+                .Select(x => x.Replace(Directory.GetCurrentDirectory(), string.Empty));
+
+            Assert.Equal(new []
+            {
+                @"\MockRootFolder\mockproject.csproj",
+                @"\MockRootFolder\MockSubfolderOne\mockproject.csproj",
+                @"\MockRootFolder\MockSubfolderTwo\mockproject.csproj"
             }, results);
         }
     }

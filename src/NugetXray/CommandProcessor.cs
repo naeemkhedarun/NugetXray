@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using CommandLine;
 
 namespace NugetXray
@@ -22,7 +23,7 @@ namespace NugetXray
 
             result.WithParsed(o =>
             {
-                var validationErrors = ((ICommandValidator)o).GetErrors().ToList();
+                var validationErrors = ((ICommandValidator) o).GetErrors().ToList();
                 errorCode = validationErrors.Any()
                     ? FailedProcess(validationErrors)
                     : _handlers.First(x => x.CommandType == o.GetType()).Execute(o).Result;
@@ -33,10 +34,7 @@ namespace NugetXray
 
         private static int FailedProcess(IEnumerable<string> validationErrors)
         {
-            foreach (var validationError in validationErrors)
-            {
-                Console.WriteLine(validationError);
-            }
+            foreach (var validationError in validationErrors) Console.WriteLine(validationError);
 
             return -1;
         }

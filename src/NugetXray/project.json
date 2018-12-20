@@ -1,26 +1,23 @@
-{
+﻿{
   "version": "1.0.0-*",
   "buildOptions": {
     "emitEntryPoint": true
   },
-
   "dependencies": {
     "CommandLineParser.Unofficial": "2.0.275",
-    "Microsoft.NETCore.App": "1.0.0",
-    "NuGet.Packaging": "3.5.0-rc1-final",
-    "NuGet.Protocol.Core.v3": "3.5.0-rc1-final",
-    "NuGet.Protocol.Core.Types": "3.5.0-rc1-final",
+    "LightInject": "5.3.0",
     "Microsoft.Extensions.Logging": "1.0.0",
-    "LightInject": "4.1.1",
     "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "System.Linq": "4.1.0",
+    "Microsoft.NETCore.App": "1.0.0",
+    "NuGet.Packaging": "4.9.2",
+    "NuGet.Protocol.Core.Types": "4.2.0",
+    "NuGet.Protocol.Core.v3": "4.2.0",
+    "System.Linq": "4.3.0",
     "System.Linq.Parallel": "4.0.1"
   },
-
   "frameworks": {
     "netcoreapp1.0": {}
   },
-
   "runtimes": {
     "win7-x64": {}
   }

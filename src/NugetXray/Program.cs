@@ -1,23 +1,26 @@
 ﻿using System;
-using LightInject;
-using NugetXray.Diff;
-using NugetXray.Duplicate;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace NugetXray
 {
     public class Program
     {
-        public static int Main(string[] args)
+        private readonly ILogger _logger;
+        private readonly CommandProcessor _commandProcessor;
+
+        public Program(ILogger<Program> logger, CommandProcessor commandProcessor)
         {
-            var container = new ServiceContainer();
-            container.SetDefaultLifetime<PerContainerLifetime>();
-            container.Register<CommandProcessor>();
-            container.Register<PackageDiffCommandHandler>();
-            container.Register<PackageDuplicateCommandHandler>();
-            container.Register<CachedPackageReader>();
+            _logger = logger;
+            _commandProcessor = commandProcessor;
+        }
 
-            var process = container.GetInstance<CommandProcessor>().Process(args);
-
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task<int> Run(string[] args)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            var process = _commandProcessor.Process(args);
+            
             Environment.Exit(process);
 
             return process;
