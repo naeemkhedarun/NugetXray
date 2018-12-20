@@ -23,11 +23,11 @@ namespace NugetXray.Duplicate
         public async Task<int> Execute(object command)
         {
             var packageDuplicateCommand = (PackageDuplicateCommand) command;
-            Console.WriteLine($"Scanning {packageDuplicateCommand.Directory} for packages.configs.{Environment.NewLine}");
+            Console.WriteLine($"Scanning {packageDuplicateCommand.Directory} for projects.{Environment.NewLine}");
 
             try
             {
-                var packages = await _cachedPackageReader.GetPackagesAsync(packageDuplicateCommand.Directory);
+                var packages = await _cachedPackageReader.GetPackagesAsync(packageDuplicateCommand.Directory, packageDuplicateCommand.Location);
 
                 var duplicates = new PackageDuplicateDetector().FindDuplicates(packages)
                     .OrderByDescending(x => x.Versions.Length);

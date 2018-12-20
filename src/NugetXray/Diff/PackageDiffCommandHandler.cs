@@ -23,7 +23,7 @@ namespace NugetXray.Diff
             
             try
             {
-                var packages = await _cachedPackageReader.GetPackagesAsync(packageDiffCommand.Directory);
+                var packages = await _cachedPackageReader.GetPackagesAsync(packageDiffCommand.Directory, packageDiffCommand.Location);
 
                 var consolidatedPackages = PackageReferenceConsolidator.Consolidate(packages);
                 var differ = new PackageConfigurationVersionDiffer(packageDiffCommand.Source);

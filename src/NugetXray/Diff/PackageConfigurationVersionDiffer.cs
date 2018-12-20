@@ -7,6 +7,7 @@ using NuGet.Packaging;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 
+
 namespace NugetXray.Diff
 {
     public class PackageConfigurationVersionDiffer

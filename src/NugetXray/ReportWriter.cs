@@ -6,9 +6,10 @@ using Newtonsoft.Json;
 
 namespace NugetXray
 {
-    class ReportWriter
+    internal class ReportWriter
     {
-        public void WriteReport(Command command, Func<string> textReport, Func<dynamic> jsonReport, Func<dynamic> htmlReport)
+        public void WriteReport(Command command, Func<string> textReport, Func<dynamic> jsonReport,
+            Func<dynamic> htmlReport)
         {
             if (string.IsNullOrEmpty(command.OutputFile))
                 return;
@@ -26,13 +27,15 @@ namespace NugetXray
                 case ReportFormat.Html:
                     var data = JsonConvert.SerializeObject(htmlReport(), Formatting.Indented);
                     var assembly = Assembly.Load(new AssemblyName("NugetXray"));
-                    var templateName = assembly.GetManifestResourceNames().First(x => x.EndsWith($"{command.GetType().Name}.html"));
+                    var templateName = assembly.GetManifestResourceNames()
+                        .First(x => x.EndsWith($"{command.GetType().Name}.html"));
                     var manifestResourceStream = assembly.GetManifestResourceStream(templateName);
                     using (var reader = new StreamReader(manifestResourceStream))
                     {
                         var template = reader.ReadToEnd();
                         report = template.Replace("@@data@@", data);
                     }
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(command.OutputFormat), command.OutputFormat, null);

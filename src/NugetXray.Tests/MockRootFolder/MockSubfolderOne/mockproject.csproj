@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <StartupObject></StartupObject>
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
@@ -15,7 +15,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NuGet.Packaging" Version="4.8.0" />
     <PackageReference Include="NuGet.Packaging.Core" Version="4.8.0" />
-    <PackageReference Include="NuGet.Protocol" Version="4.8.0" />
+    <PackageReference Include="NuGet.Packaging.Core.Types" Version="4.2.0" />
+    <PackageReference Include="NuGet.Protocol.Core.v3" Version="4.2.0" />
   </ItemGroup>
 
 </Project>
